@@ -27,7 +27,7 @@ There are three main client classes that can be used to interact with the API:
 2. [`BinanceApiAsyncRestClient`](https://github.com/hojuara/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiAsyncRestClient.kt), an asynchronous/non-blocking [Binance API](https://developers.binance.com/docs/binance-spot-api-docs/rest-api) client;
 3. [`BinanceApiWebSocketClient`](https://github.com/hojuara/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiWebSocketClient.kt), a data streaming client using [Binance WebSocket API](https://developers.binance.com/docs/binance-spot-api-docs/web-socket-streams).
 
-These can be instantiated through the corresponding factory method of [`BinanceApiClientFactory`](https://github.com/joaopsilva/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiClientFactory.kt), by passing the[security parameters `API-KEY` and `SECRET`, which can be created at [How to Create API Keys on Binance?](https://www.binance.com/en/support/faq/detail/360002502072).
+These can be instantiated through the corresponding factory method of [`BinanceApiClientFactory`](https://github.com/hojuara/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiClientFactory.kt), by passing the security parameters `API-KEY` and `SECRET`, which can be created at [How to Create API Keys on Binance?](https://www.binance.com/en/support/faq/detail/360002502072).
 
 ```kotlin
 val factory = BinanceApiClientFactory.newInstance("API-KEY", "SECRET")
@@ -464,7 +464,7 @@ client.onCandlestickEvent("ethbtc,ethusdt", CandlestickInterval.ONE_MINUTE, { re
 
 ### Asynchronous requests
 
-To make an asynchronous request it is necessary to use the `BinanceApiAsyncRestClient`, and call the method with the same name as in the synchronous version, but passing a callback [`BinanceApiCallback`](https://github.com/joaopsilva/binance-kotlin-api/blob/master/src/main/kotlin/com/binance/api/client/BinanceApiCallback.kt) that handles the response whenever it arrives.
+To make an asynchronous request it is necessary to use the `BinanceApiAsyncRestClient`, and call the method with the same name as in the synchronous version, but passing a callback [`BinanceApiCallback`](https://github.com/hojuara/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiCallback.kt) that handles the response whenever it arrives.
 
 #### Get latest price of a symbol asynchronously
 ```kotlin
