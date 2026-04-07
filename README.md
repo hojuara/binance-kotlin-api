@@ -1,10 +1,10 @@
 # Kotlin Binance API
 
-binance-kotlin-api is a lightweight Kotlin (implemented with Spring Framework) library for interacting with the [Binance API](https://www.binance.com/restapipub.html), providing complete API coverage, and supporting synchronous and asynchronous requests, as well as event streaming using WebSockets.
+binance-kotlin-api is a lightweight Kotlin (implemented with Spring Framework) library for interacting with the [Binance API](https://developers.binance.com/docs/binance-spot-api-docs/rest-api), providing complete API coverage, and supporting synchronous and asynchronous requests, as well as event streaming using WebSockets.
 
 ## Features
-* Support for synchronous and asynchronous REST requests to all [General](https://www.binance.com/restapipub.html#user-content-general-endpoints), [Market Data](https://www.binance.com/restapipub.html#user-content-market-data-endpoints), [Account](https://www.binance.com/restapipub.html#user-content-account-endpoints) endpoints, and [User](https://www.binance.com/restapipub.html#user-content-user-data-stream-endpoints) stream endpoints.
-* Support for User Data, Trade, Kline, and Depth event streaming using [Binance WebSocket API](https://www.binance.com/restapipub.html#wss-endpoint).
+* Support for synchronous and asynchronous REST requests to all [General](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/general-api-information), [Market Data](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints) and [Account](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/account-endpoints) endpoints.
+* Support for User Data, Trade, Kline, and Depth event streaming using [Binance WebSocket API](https://developers.binance.com/docs/binance-spot-api-docs/web-socket-streams).
 
 ## Installation
 1. Install library into your Maven's local repository by running `./gradlew publishToMavenLocal`
@@ -15,7 +15,7 @@ dependencies {
 }
 ```
 
-Alternatively, you can clone this repository and run the [examples](https://github.com/hojuara/binance-kotlin-api/tree/master/src/test/kotlin/com/binance/api/examples).
+Alternatively, you can clone this repository and run the [examples](https://github.com/hojuara/binance-kotlin-api/tree/main/src/test/kotlin/com/binance/api/examples).
 
 ## Examples
 
@@ -23,11 +23,11 @@ Alternatively, you can clone this repository and run the [examples](https://gith
 
 There are three main client classes that can be used to interact with the API:
 
-1. [`BinanceApiRestClient`](https://github.com/hojuara/binance-kotlin-api/blob/master/src/main/kotlin/com/binance/api/client/BinanceApiRestClient.kt), a synchronous/blocking [Binance API](https://developers.binance.com/docs/binance-spot-api-docs/rest-api) client;
-2. [`BinanceApiAsyncRestClient`](https://github.com/joaopsilva/binance-kotlin-api/blob/master/src/main/kotlin/com/binance/api/client/BinanceApiAsyncRestClient.kt), an asynchronous/non-blocking [Binance API](https://developers.binance.com/docs/binance-spot-api-docs/rest-api) client;
-3. [`BinanceApiWebSocketClient`](https://github.com/joaopsilva/binance-kotlin-api/blob/master/src/main/kotlin/com/binance/api/client/BinanceApiWebSocketClient.kt), a data streaming client using [Binance WebSocket API](https://developers.binance.com/docs/binance-spot-api-docs/web-socket-streams).
+1. [`BinanceApiRestClient`](https://github.com/hojuara/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiRestClient.kt), a synchronous/blocking [Binance API](https://developers.binance.com/docs/binance-spot-api-docs/rest-api) client;
+2. [`BinanceApiAsyncRestClient`](https://github.com/hojuara/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiAsyncRestClient.kt), an asynchronous/non-blocking [Binance API](https://developers.binance.com/docs/binance-spot-api-docs/rest-api) client;
+3. [`BinanceApiWebSocketClient`](https://github.com/hojuara/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiWebSocketClient.kt), a data streaming client using [Binance WebSocket API](https://developers.binance.com/docs/binance-spot-api-docs/web-socket-streams).
 
-These can be instantiated through the corresponding factory method of [`BinanceApiClientFactory`](https://github.com/joaopsilva/binance-kotlin-api/blob/master/src/main/kotlin/com/binance/api/client/BinanceApiClientFactory.kt), by passing the[security parameters `API-KEY` and `SECRET`, which can be created at [How to Create API Keys on Binance?](https://www.binance.com/en/support/faq/detail/360002502072).
+These can be instantiated through the corresponding factory method of [`BinanceApiClientFactory`](https://github.com/joaopsilva/binance-kotlin-api/blob/main/src/main/kotlin/com/binance/api/client/BinanceApiClientFactory.kt), by passing the[security parameters `API-KEY` and `SECRET`, which can be created at [How to Create API Keys on Binance?](https://www.binance.com/en/support/faq/detail/360002502072).
 
 ```kotlin
 val factory = BinanceApiClientFactory.newInstance("API-KEY", "SECRET")
@@ -370,7 +370,7 @@ CandlestickEvent[eventType=kline,eventTime=1508417096085,symbol=ETHBTC,openTime=
 
 #### Keep a local depth cache for a symbol
 
-Please see [DepthCacheExample.kt](https://github.com/hojuara/binance-kotlin-api/blob/master/src/test/kotlin/com/binance/api/examples/DepthCacheExample.kt) for an implementation which uses the binance-kotlin-api for maintaining a local depth cache for a symbol. In the same folder, you can also find how to do caching of account balances, aggregated trades, and klines/candlesticks.
+Please see [DepthCacheExample.kt](https://github.com/hojuara/binance-kotlin-api/blob/main/src/test/kotlin/com/binance/api/examples/DepthCacheExample.kt) for an implementation which uses the binance-kotlin-api for maintaining a local depth cache for a symbol. In the same folder, you can also find how to do caching of account balances, aggregated trades, and klines/candlesticks.
 
 <details>
  <summary>View Response</summary>
@@ -517,4 +517,4 @@ Invalid symbol
 </details>
 
 ### More examples
-An extensive set of examples, covering most aspects of the API, can be found at https://github.com/joaopsilva/binance-kotlin-api/tree/master/src/test/kotlin/com/binance/api/examples.
+An extensive set of examples, covering most aspects of the API, can be found at [Examples](https://github.com/hojuara/binance-kotlin-api/tree/main/src/test/kotlin/com/binance/api/examples).
