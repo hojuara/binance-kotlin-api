@@ -13,7 +13,7 @@ object AccountEndpointsExample {
         val client = factory.newRestClient()
 
         // Obter saldos da conta (passando recvWindow e timestamp explicitamente)
-        val account = client.getAccount(60_000L, System.currentTimeMillis())!!
+        val account = client.getAccount()
         println("Todos os saldos: ${account.balances}")
         println("Saldo de ETH: ${account.getAssetBalance("ETH")}")
 

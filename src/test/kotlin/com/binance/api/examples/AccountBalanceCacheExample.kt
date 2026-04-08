@@ -37,7 +37,7 @@ class AccountBalanceCacheExample(apiKey: String, secret: String) {
      */
     private fun initializeAssetBalanceCacheAndStreamSession(): String {
         val client = clientFactory.newRestClient()
-        val account = client.account
+        val account = client.getAccount()
 
         // Popula o cache inicial usando o retorno da conta
         account.balances.forEach { assetBalance ->

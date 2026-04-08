@@ -194,29 +194,9 @@ class BinanceApiRestClientIntegrationTest {
 
     @Test
     fun `getAccount should be returned for signed endpoint`() {
-        val account = client.getAccount(60_000L, System.currentTimeMillis())
+        val account = client.getAccount()
         assertNotNull(account)
         assertNotNull(account.balances)
-    }
-
-    @Test
-    fun `account should be returned for signed endpoint`() {
-        val account = client.account
-        assertNotNull(account)
-        assertNotNull(account.balances)
-        assertTrue(account.balances.isNotEmpty())
-    }
-
-    // @Test
-    fun `getMyTrades with params should return list (disabled by default)`() {
-        val trades = client.getMyTrades(SYMBOL, 10, null, 60_000L, System.currentTimeMillis())
-        assertNotNull(trades)
-    }
-
-    // @Test
-    fun `getMyTrades symbol+limit overload should return list (disabled by default)`() {
-        val trades = client.getMyTrades(SYMBOL, 10)
-        assertNotNull(trades)
     }
 
     // @Test

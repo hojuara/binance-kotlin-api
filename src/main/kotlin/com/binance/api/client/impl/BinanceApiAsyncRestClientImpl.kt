@@ -65,28 +65,28 @@ class BinanceApiAsyncRestClientImpl(
 
     // Market Data endpoints
 
-    override fun getOrderBook(symbol: String, limit: Int, callback: BinanceApiCallback<OrderBook>) =
+    override fun getOrderBook(symbol: String, limit: Int?, callback: BinanceApiCallback<OrderBook>) =
         submit(callback) { syncClient.getOrderBook(symbol, limit) }
 
     override fun getTrades(
         symbol: String,
-        limit: Int,
+        limit: Int?,
         callback: BinanceApiCallback<List<TradeHistoryItem>>
     ) = submit(callback) { syncClient.getTrades(symbol, limit) }
 
     override fun getHistoricalTrades(
         symbol: String,
-        limit: Int,
-        fromId: Long,
+        limit: Int?,
+        fromId: Long?,
         callback: BinanceApiCallback<List<TradeHistoryItem>>
     ) = submit(callback) { syncClient.getHistoricalTrades(symbol, limit, fromId) }
 
     override fun getAggTrades(
         symbol: String,
-        fromId: String,
-        limit: Int,
-        startTime: Long,
-        endTime: Long,
+        fromId: String?,
+        limit: Int?,
+        startTime: Long?,
+        endTime: Long?,
         callback: BinanceApiCallback<List<AggTrade>>
     ) = submit(callback) { syncClient.getAggTrades(symbol, fromId, limit, startTime, endTime) }
 
@@ -96,9 +96,9 @@ class BinanceApiAsyncRestClientImpl(
     override fun getCandlestickBars(
         symbol: String,
         interval: CandlestickInterval,
-        limit: Int,
-        startTime: Long,
-        endTime: Long,
+        limit: Int?,
+        startTime: Long?,
+        endTime: Long?,
         callback: BinanceApiCallback<List<Candlestick>>
     ) = submit(callback) { syncClient.getCandlestickBars(symbol, interval, limit, startTime, endTime) }
 
@@ -107,6 +107,9 @@ class BinanceApiAsyncRestClientImpl(
         interval: CandlestickInterval,
         callback: BinanceApiCallback<List<Candlestick>>
     ) = submit(callback) { syncClient.getCandlestickBars(symbol, interval) }
+
+    override fun getAvgPrice(symbol: String, callback: BinanceApiCallback<AvgPrice>) =
+        submit(callback) { syncClient.getAvgPrice(symbol) }
 
     override fun get24HrPriceStatistics(
         symbol: String,
@@ -155,33 +158,19 @@ class BinanceApiAsyncRestClientImpl(
     ) = submit(callback) { syncClient.getAllOrders(orderRequest) }
 
     override fun getAccount(
-        recvWindow: Long,
-        timestamp: Long,
+        omitZeroBalances: Boolean?,
+        recvWindow: Long? ,
         callback: BinanceApiCallback<Account>
-    ) = submit(callback) { syncClient.getAccount(recvWindow, timestamp) }
-
-    override fun getAccount(callback: BinanceApiCallback<Account>) =
-        submit(callback) { syncClient.account }
+    ) = submit(callback) { syncClient.getAccount(omitZeroBalances, recvWindow) }
 
     override fun getMyTrades(
         symbol: String,
-        limit: Int,
-        fromId: Long,
-        recvWindow: Long,
-        timestamp: Long,
+        limit: Int?,
+        fromId: Long?,
+        recvWindow: Long?,
+        timestamp: Long?,
         callback: BinanceApiCallback<List<Trade>>
     ) = submit(callback) { syncClient.getMyTrades(symbol, limit, fromId, recvWindow, timestamp) }
-
-    override fun getMyTrades(
-        symbol: String,
-        limit: Int,
-        callback: BinanceApiCallback<List<Trade>>
-    ) = submit(callback) { syncClient.getMyTrades(symbol, limit) }
-
-    override fun getMyTrades(
-        symbol: String,
-        callback: BinanceApiCallback<List<Trade>>
-    ) = submit(callback) { syncClient.getMyTrades(symbol) }
 
     override fun withdraw(
         asset: String,
@@ -206,5 +195,11 @@ class BinanceApiAsyncRestClientImpl(
         asset: String,
         callback: BinanceApiCallback<DepositAddress>
     ) = submit(callback) { syncClient.getDepositAddress(asset) }
+
+    override fun convertDust(assets: List<String>, callback: BinanceApiCallback<DustConversionInfo>) =
+        submit(callback) { syncClient.convertDust(assets) }
+
+    override fun getMarketCap(symbol: String, callback: BinanceApiCallback<String?>) =
+        submit(callback) { syncClient.getMarketCap(symbol) }
 }
 

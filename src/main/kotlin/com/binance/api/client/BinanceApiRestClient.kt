@@ -1,5 +1,6 @@
 package com.binance.api.client
 
+import com.binance.api.client.constant.BinanceApiConstants
 import com.binance.api.client.domain.account.*
 import com.binance.api.client.domain.account.request.*
 import com.binance.api.client.domain.general.Asset
@@ -41,7 +42,7 @@ interface BinanceApiRestClient {
      * @param symbol ticker symbol (e.g. ETHBTC)
      * @param limit  depth of the order book (max 100)
      */
-    fun getOrderBook(symbol: String, limit: Int): OrderBook
+    fun getOrderBook(symbol: String, limit: Int? = null): OrderBook
 
     /**
      * Get recent trades (up to last 500). Weight: 1
@@ -49,7 +50,7 @@ interface BinanceApiRestClient {
      * @param symbol ticker symbol (e.g. ETHBTC)
      * @param limit  of last trades (Default 500; max 1000.)
      */
-    fun getTrades(symbol: String, limit: Int): List<TradeHistoryItem>
+    fun getTrades(symbol: String, limit: Int? = null): List<TradeHistoryItem>
 
     /**
      * Get older trades. Weight: 5
@@ -58,7 +59,7 @@ interface BinanceApiRestClient {
      * @param limit  of last trades (Default 500; max 1000.)
      * @param fromId TradeId to fetch from. Default gets most recent trades.
      */
-    fun getHistoricalTrades(symbol: String, limit: Int, fromId: Long): List<TradeHistoryItem>
+    fun getHistoricalTrades(symbol: String, limit: Int? = null, fromId: Long? = null): List<TradeHistoryItem>
 
     /**
      * Get compressed, aggregate trades. Trades that fill at the time, from the same
@@ -81,18 +82,11 @@ interface BinanceApiRestClient {
      */
     fun getAggTrades(
         symbol: String,
-        fromId: String?,
-        limit: Int?,
-        startTime: Long?,
-        endTime: Long?
+        fromId: String? = null,
+        limit: Int? = null,
+        startTime: Long? = null,
+        endTime: Long? = null
     ): List<AggTrade>
-
-    /**
-     * Return the most recent aggregate trades for `symbol`
-     *
-     * @see .getAggTrades
-     */
-    fun getAggTrades(symbol: String): List<AggTrade>
 
     /**
      * Kline/candlestick bars for a symbol. Klines are uniquely identified by their
@@ -110,9 +104,9 @@ interface BinanceApiRestClient {
     fun getCandlestickBars(
         symbol: String,
         interval: CandlestickInterval,
-        limit: Int?,
-        startTime: Long?,
-        endTime: Long?
+        limit: Int? = null,
+        startTime: Long? = null,
+        endTime: Long? = null
     ): List<Candlestick>
 
     /**
@@ -122,14 +116,6 @@ interface BinanceApiRestClient {
      * @return a average price information for symbol
      */
     fun getAvgPrice(symbol: String): AvgPrice
-
-    /**
-     * Kline/candlestick bars for a symbol. Klines are uniquely identified by their
-     * open time.
-     *
-     * @see .getCandlestickBars
-     */
-    fun getCandlestickBars(symbol: String, interval: CandlestickInterval): List<Candlestick>
 
     /**
      * Get 24 hour price change statistics.
@@ -212,12 +198,7 @@ interface BinanceApiRestClient {
     /**
      * Get current account information.
      */
-    fun getAccount(recvWindow: Long, timestamp: Long): Account
-
-    /**
-     * Get current account information using default parameters.
-     */
-    val account: Account
+    fun getAccount(omitZeroBalances: Boolean? = null, recvWindow: Long? = BinanceApiConstants.DEFAULT_RECEIVING_WINDOW): Account
 
     /**
      * Get trades for a specific account and symbol.
@@ -229,28 +210,11 @@ interface BinanceApiRestClient {
      */
     fun getMyTrades(
         symbol: String,
-        limit: Int?,
-        fromId: Long?,
-        recvWindow: Long?,
-        timestamp: Long?
+        limit: Int? = null,
+        fromId: Long? = null,
+        recvWindow: Long? = null,
+        timestamp: Long? = null
     ): List<Trade>
-
-    /**
-     * Get trades for a specific account and symbol.
-     *
-     * @param symbol symbol to get trades from
-     * @param limit  default 500; max 1000
-     * @return a list of trades
-     */
-    fun getMyTrades(symbol: String, limit: Int): List<Trade>
-
-    /**
-     * Get trades for a specific account and symbol.
-     *
-     * @param symbol symbol to get trades from
-     * @return a list of trades
-     */
-    fun getMyTrades(symbol: String): List<Trade>
 
     /**
      * Submit a withdraw request.
@@ -262,7 +226,13 @@ interface BinanceApiRestClient {
      * @param name       description/alias of the address
      * @param addressTag Secondary address identifier for coins like XRP,XMR etc.
      */
-    fun withdraw(asset: String, address: String, amount: String, name: String?, addressTag: String?): WithdrawResult
+    fun withdraw(
+        asset: String,
+        address: String,
+        amount: String,
+        name: String? = null,
+        addressTag: String? = null
+    ): WithdrawResult
 
     /**
      * Fetch account deposit history.

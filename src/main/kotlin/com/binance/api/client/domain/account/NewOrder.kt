@@ -14,17 +14,17 @@ data class NewOrder(
     /**
      * Symbol to place the order on.
      */
-    var symbol: String? = null,
+    val symbol: String,
 
     /**
      * Buy/Sell order side.
      */
-    var side: OrderSide? = null,
+    val side: OrderSide,
 
     /**
      * Type of order.
      */
-    var type: OrderType? = null,
+    val type: OrderType,
 
     /**
      * Time in force to indicate how long will the order remain active.

@@ -7,7 +7,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
  * Base request parameters for order-related methods.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class OrderRequest(val symbol: String) {
+open class OrderRequest(symbol: String?) {
+
+    var symbol: String? = symbol
+        private set
 
     var recvWindow: Long? = BinanceApiConstants.DEFAULT_RECEIVING_WINDOW
         private set
@@ -15,15 +18,11 @@ open class OrderRequest(val symbol: String) {
     var timestamp: Long = System.currentTimeMillis()
         private set
 
-    fun recvWindow(recvWindow: Long?): OrderRequest {
-        this.recvWindow = recvWindow
-        return this
-    }
+    fun symbol(symbol: String) = apply { this.symbol = symbol }
 
-    fun timestamp(timestamp: Long): OrderRequest {
-        this.timestamp = timestamp
-        return this
-    }
+    fun recvWindow(recvWindow: Long) = apply { this.recvWindow = recvWindow }
+
+    fun timestamp(timestamp: Long) = apply { this.timestamp = timestamp }
 
     override fun toString(): String {
         return "OrderRequest(symbol='$symbol', recvWindow=$recvWindow, timestamp=$timestamp)"

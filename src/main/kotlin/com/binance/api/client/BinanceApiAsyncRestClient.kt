@@ -1,5 +1,6 @@
 package com.binance.api.client
 
+import com.binance.api.client.constant.BinanceApiConstants
 import com.binance.api.client.domain.account.*
 import com.binance.api.client.domain.account.request.*
 import com.binance.api.client.domain.event.ListenKey
@@ -41,7 +42,7 @@ interface BinanceApiAsyncRestClient {
      * @param limit depth of the order book (max 100)
      * @param callback the callback that handles the response
      */
-    fun getOrderBook(symbol: String, limit: Int, callback: BinanceApiCallback<OrderBook>)
+    fun getOrderBook(symbol: String, limit: Int? = null, callback: BinanceApiCallback<OrderBook>)
 
     /**
      * Get recent trades (up to last 500). Weight: 1
@@ -50,7 +51,7 @@ interface BinanceApiAsyncRestClient {
      * @param limit of last trades (Default 500; max 1000.)
      * @param callback the callback that handles the response
      */
-    fun getTrades(symbol: String, limit: Int, callback: BinanceApiCallback<List<TradeHistoryItem>>)
+    fun getTrades(symbol: String, limit: Int? = null, callback: BinanceApiCallback<List<TradeHistoryItem>>)
 
     /**
      * Get older trades. Weight: 5
@@ -62,8 +63,8 @@ interface BinanceApiAsyncRestClient {
      */
     fun getHistoricalTrades(
         symbol: String,
-        limit: Int,
-        fromId: Long,
+        limit: Int? = null,
+        fromId: Long? = null,
         callback: BinanceApiCallback<List<TradeHistoryItem>>
     )
 
@@ -84,10 +85,10 @@ interface BinanceApiAsyncRestClient {
      */
     fun getAggTrades(
         symbol: String,
-        fromId: String,
-        limit: Int,
-        startTime: Long,
-        endTime: Long,
+        fromId: String? = null,
+        limit: Int? = null,
+        startTime: Long? = null,
+        endTime: Long? = null,
         callback: BinanceApiCallback<List<AggTrade>>
     )
 
@@ -111,9 +112,9 @@ interface BinanceApiAsyncRestClient {
     fun getCandlestickBars(
         symbol: String,
         interval: CandlestickInterval,
-        limit: Int,
-        startTime: Long,
-        endTime: Long,
+        limit: Int? = null,
+        startTime: Long? = null,
+        endTime: Long? = null,
         callback: BinanceApiCallback<List<Candlestick>>
     )
 
@@ -127,6 +128,14 @@ interface BinanceApiAsyncRestClient {
         interval: CandlestickInterval,
         callback: BinanceApiCallback<List<Candlestick>>
     )
+
+    /**
+     * Return current average price for a symbol (asynchronous)..
+     *
+     * @param symbol    symbol to aggregate (mandatory)
+     * @param callback the callback that handles the response
+     */
+    fun getAvgPrice(symbol: String, callback: BinanceApiCallback<AvgPrice>)
 
     /**
      * Get 24 hour price change statistics (asynchronous).
@@ -217,12 +226,7 @@ interface BinanceApiAsyncRestClient {
     /**
      * Get current account information (async).
      */
-    fun getAccount(recvWindow: Long, timestamp: Long, callback: BinanceApiCallback<Account>)
-
-    /**
-     * Get current account information using default parameters (async).
-     */
-    fun getAccount(callback: BinanceApiCallback<Account>)
+    fun getAccount(omitZeroBalances: Boolean? = null, recvWindow: Long? = BinanceApiConstants.DEFAULT_RECEIVING_WINDOW, callback: BinanceApiCallback<Account>)
 
     /**
      * Get trades for a specific account and symbol.
@@ -234,29 +238,12 @@ interface BinanceApiAsyncRestClient {
      */
     fun getMyTrades(
         symbol: String,
-        limit: Int,
-        fromId: Long,
-        recvWindow: Long,
-        timestamp: Long,
+        limit: Int? = null,
+        fromId: Long? = null,
+        recvWindow: Long? = null,
+        timestamp: Long? = null,
         callback: BinanceApiCallback<List<Trade>>
     )
-
-    /**
-     * Get trades for a specific account and symbol.
-     *
-     * @param symbol symbol to get trades from
-     * @param limit default 500; max 1000
-     * @param callback the callback that handles the response with a list of trades
-     */
-    fun getMyTrades(symbol: String, limit: Int, callback: BinanceApiCallback<List<Trade>>)
-
-    /**
-     * Get trades for a specific account and symbol.
-     *
-     * @param symbol symbol to get trades from
-     * @param callback the callback that handles the response with a list of trades
-     */
-    fun getMyTrades(symbol: String, callback: BinanceApiCallback<List<Trade>>)
 
     /**
      * Submit a withdraw request.
@@ -273,8 +260,8 @@ interface BinanceApiAsyncRestClient {
         asset: String,
         address: String,
         amount: String,
-        name: String?,
-        addressTag: String?,
+        name: String? = null,
+        addressTag: String? = null,
         callback: BinanceApiCallback<WithdrawResult>
     )
 
@@ -298,4 +285,19 @@ interface BinanceApiAsyncRestClient {
      * @param callback the callback that handles the response and returns the deposit address
      */
     fun getDepositAddress(asset: String, callback: BinanceApiCallback<DepositAddress>)
+
+    /**
+     * Convert dust assets to BNB (async)
+     *
+     * @param assets
+     */
+    fun convertDust(assets: List<String>, callback: BinanceApiCallback<DustConversionInfo>)
+
+    /**
+     * Return market cap of symbol
+     *
+     * @param symbol
+     * @return
+     */
+    fun getMarketCap(symbol: String, callback: BinanceApiCallback<String?>)
 }

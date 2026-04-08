@@ -161,7 +161,7 @@ class BinanceApiRestClientImpl(
 
     // Market Data endpoints
 
-    override fun getOrderBook(symbol: String, limit: Int): OrderBook =
+    override fun getOrderBook(symbol: String, limit: Int?): OrderBook =
         execute(
             HttpMethod.GET,
             "/api/v3/depth",
@@ -169,15 +169,15 @@ class BinanceApiRestClientImpl(
             OrderBook::class.java
         )
 
-    override fun getTrades(symbol: String, limit: Int): List<TradeHistoryItem> =
+    override fun getTrades(symbol: String, limit: Int?): List<TradeHistoryItem> =
         execute(
             HttpMethod.GET,
-            "/api/v1/trades",
+            "/api/v3/trades",
             listOf("symbol" to symbol, "limit" to limit),
             Array<TradeHistoryItem>::class.java
         ).toList()
 
-    override fun getHistoricalTrades(symbol: String, limit: Int, fromId: Long): List<TradeHistoryItem> =
+    override fun getHistoricalTrades(symbol: String, limit: Int?, fromId: Long?): List<TradeHistoryItem> =
         execute(
             HttpMethod.GET,
             "/api/v3/historicalTrades",
@@ -204,9 +204,6 @@ class BinanceApiRestClientImpl(
             ),
             Array<AggTrade>::class.java
         ).toList()
-
-    override fun getAggTrades(symbol: String): List<AggTrade> =
-        getAggTrades(symbol, null, null, null, null)
 
     override fun getCandlestickBars(
         symbol: String,
@@ -235,9 +232,6 @@ class BinanceApiRestClientImpl(
             listOf("symbol" to symbol),
             AvgPrice::class.java
         )
-
-    override fun getCandlestickBars(symbol: String, interval: CandlestickInterval): List<Candlestick> =
-        getCandlestickBars(symbol, interval, null, null, null)
 
     override fun get24HrPriceStatistics(symbol: String): TickerStatistics =
         execute(
@@ -376,20 +370,18 @@ class BinanceApiRestClientImpl(
             signed = true
         ).toList()
 
-    override fun getAccount(recvWindow: Long, timestamp: Long): Account =
+    override fun getAccount(omitZeroBalances: Boolean?, recvWindow: Long?): Account =
         execute(
             HttpMethod.GET,
             "/api/v3/account",
             listOf(
+                "omitZeroBalances" to  omitZeroBalances,
                 "recvWindow" to recvWindow,
-                "timestamp" to timestamp
+                "timestamp" to System.currentTimeMillis(),
             ),
             Account::class.java,
             signed = true
         )
-
-    override val account: Account
-        get() = getAccount(BinanceApiConstants.DEFAULT_RECEIVING_WINDOW, System.currentTimeMillis())
 
     override fun getMyTrades(
         symbol: String,
@@ -411,24 +403,6 @@ class BinanceApiRestClientImpl(
             Array<Trade>::class.java,
             signed = true
         ).toList()
-
-    override fun getMyTrades(symbol: String, limit: Int): List<Trade> =
-        getMyTrades(
-            symbol,
-            limit,
-            null,
-            BinanceApiConstants.DEFAULT_RECEIVING_WINDOW,
-            System.currentTimeMillis()
-        )
-
-    override fun getMyTrades(symbol: String): List<Trade> =
-        getMyTrades(
-            symbol,
-            null,
-            null,
-            BinanceApiConstants.DEFAULT_RECEIVING_WINDOW,
-            System.currentTimeMillis()
-        )
 
     override fun withdraw(
         asset: String,
