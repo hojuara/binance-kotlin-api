@@ -16,57 +16,37 @@ class CandlestickEventDeserializerTest {
     @Test
     fun `test candlestick event deserializer`() {
         val candlestickEventJson = """
-            {
-                "e": "kline",
-                "E": 1,
-                "s": "ETHBTC",
-                "k": {
-                    "t": 1499404860000,
-                    "T": 1499404919999,
-                    "s": "ETHBTC",
-                    "i": "1m",
-                    "f": 77462,
-                    "L": 77465,
-                    "o": "0.10278577",
-                    "c": "0.10278645",
-                    "h": "0.10278712",
-                    "l": "0.10278518",
-                    "v": "17.47929838",
-                    "n": 4,
-                    "x": false,
-                    "q": "1.79662878",
-                    "V": "2.34879839",
-                    "Q": "0.24142166",
-                    "B": "13279784.01349473"
-                }
-            }
+            [
+                1655971200000,
+                "0.01086000",
+                "0.01086600",
+                "0.01083600",
+                "0.01083800",
+                "2290.53800000",
+                1655974799999,
+                "24.85074442",
+                2283,
+                "1171.64000000",
+                "12.71225884"
+            ]
         """.trimIndent()
 
         val mapper = JsonMapperUtils.getInstance()
         try {
             val candlestickEvent = mapper.readValue(candlestickEventJson, CandlestickEvent::class.java)
 
-            // Verificações do Evento Base
-            assertEquals("kline", candlestickEvent.eventType)
-            assertEquals(1L, candlestickEvent.eventTime)
-            assertEquals("ETHBTC", candlestickEvent.symbol)
-
             // Verificações do Detalhe do Candlestick (Kline)
-            assertEquals(1499404860000L, candlestickEvent.openTime)
-            assertEquals("0.10278577", candlestickEvent.open)
-            assertEquals("0.10278712", candlestickEvent.high)
-            assertEquals("0.10278518", candlestickEvent.low)
-            assertEquals("0.10278645", candlestickEvent.close)
-            assertEquals("17.47929838", candlestickEvent.volume)
-            assertEquals(1499404919999L, candlestickEvent.closeTime)
-            assertEquals("1m", candlestickEvent.intervalId)
-            assertEquals(77462L, candlestickEvent.firstTradeId)
-            assertEquals(77465L, candlestickEvent.lastTradeId)
-            assertEquals("1.79662878", candlestickEvent.quoteAssetVolume)
-            assertEquals(4L, candlestickEvent.numberOfTrades)
-            assertEquals("2.34879839", candlestickEvent.takerBuyBaseAssetVolume)
-            assertEquals("0.24142166", candlestickEvent.takerBuyQuoteAssetVolume)
-            assertEquals(false, candlestickEvent.isBarFinal)
+            assertEquals(1655971200000L, candlestickEvent.openTime)
+            assertEquals("0.01086000", candlestickEvent.open)
+            assertEquals("0.01086600", candlestickEvent.high)
+            assertEquals("0.01083600", candlestickEvent.low)
+            assertEquals("0.01083800", candlestickEvent.close)
+            assertEquals("2290.53800000", candlestickEvent.volume)
+            assertEquals(1655974799999L, candlestickEvent.closeTime)
+            assertEquals("24.85074442", candlestickEvent.quoteAssetVolume)
+            assertEquals(2283L, candlestickEvent.numberOfTrades)
+            assertEquals("1171.64000000", candlestickEvent.takerBuyBaseAssetVolume)
+            assertEquals("12.71225884", candlestickEvent.takerBuyQuoteAssetVolume)
 
         } catch (e: IOException) {
             fail("Erro na desserialização: ${e.message}")

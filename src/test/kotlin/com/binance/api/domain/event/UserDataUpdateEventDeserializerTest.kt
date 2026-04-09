@@ -21,21 +21,24 @@ class UserDataUpdateEventDeserializerTest {
     fun `should deserialize account update event`() {
         val accountUpdateJson = """
             {
-                "e": "outboundAccountInfo",
-                "E": 1,
-                "m": 10,
-                "t": 10,
-                "b": 0,
-                "s": 0,
-                "T": true,
-                "W": true,
-                "D": true,
-                "B": [
-                    {"a": "BTC", "f": "0.00000000", "l": "0.00000000"},
-                    {"a": "LTC", "f": "0.00000000", "l": "0.00000000"},
-                    {"a": "ETH", "f": "0.10000000", "l": "0.00000000"},
-                    {"a": "ZEC", "f": "0.00000000", "l": "0.00000000"}
-                ]
+                "subscriptionId" : 0,
+                "event" : {
+                    "e" : "outboundAccountPosition",
+                    "E" : 1775700812111,
+                    "u" : 1775700812111,
+                    "B" : [
+                        {
+                            "a" : "BTC",
+                            "f" : "0.00045282",
+                            "l" : "0.00000000"
+                        },
+                        {
+                            "a" : "ETH",
+                            "f" : "0.00000000",
+                            "l" : "0.00000000"
+                        }
+                    ]
+                }
             }
         """.trimIndent()
 
@@ -43,12 +46,12 @@ class UserDataUpdateEventDeserializerTest {
             val event = mapper.readValue(accountUpdateJson, UserDataUpdateEvent::class.java)
 
             assertEquals(UserDataUpdateEventType.ACCOUNT_UPDATE, event.eventType)
-            assertEquals(1L, event.eventTime)
+            assertEquals(1775700812111L, event.eventTime)
 
             val accountUpdateEvent = event.accountUpdateEvent!!
             accountUpdateEvent.balances.forEach { assetBalance ->
-                if (assetBalance.asset == "ETH") {
-                    assertEquals("0.10000000", assetBalance.free)
+                if (assetBalance.asset == "BTC") {
+                    assertEquals("0.00045282", assetBalance.free)
                 } else {
                     assertEquals("0.00000000", assetBalance.free)
                 }
@@ -63,34 +66,37 @@ class UserDataUpdateEventDeserializerTest {
     fun `should deserialize order update event`() {
         val orderUpdateEventJson = """
             {
-                "e": "executionReport",
-                "E": 1,
-                "s": "NEOETH",
-                "c": "XXX",
-                "S": "BUY",
-                "o": "LIMIT",
-                "f": "GTC",
-                "q": "1000.00000000",
-                "p": "0.00010000",
-                "P": "0.00000000",
-                "F": "0.00000000",
-                "g": -1,
-                "C": "5yairWLqfzbusOUdPyG712",
-                "x": "CANCELED",
-                "X": "CANCELED",
-                "r": "NONE",
-                "i": 123456,
-                "l": "0.00000000",
-                "z": "0.00000000",
-                "L": "0.00000000",
-                "n": "0",
-                "N": null,
-                "T": 1,
-                "t": -1,
-                "I": 1,
-                "w": false,
-                "m": false,
-                "M": false
+                "subscriptionId" : 0,
+                "event" : {
+                    "e": "executionReport",
+                    "E": 1,
+                    "s": "NEOETH",
+                    "c": "XXX",
+                    "S": "BUY",
+                    "o": "LIMIT",
+                    "f": "GTC",
+                    "q": "1000.00000000",
+                    "p": "0.00010000",
+                    "P": "0.00000000",
+                    "F": "0.00000000",
+                    "g": -1,
+                    "C": "5yairWLqfzbusOUdPyG712",
+                    "x": "CANCELED",
+                    "X": "CANCELED",
+                    "r": "NONE",
+                    "i": 123456,
+                    "l": "0.00000000",
+                    "z": "0.00000000",
+                    "L": "0.00000000",
+                    "n": "0",
+                    "N": null,
+                    "T": 1,
+                    "t": -1,
+                    "I": 1,
+                    "w": false,
+                    "m": false,
+                    "M": false
+                }
             }
         """.trimIndent()
 

@@ -47,23 +47,24 @@ class CandlesticksCacheExample(symbol: String, interval: CandlestickInterval) {
         client.onCandlestickEvent(
             symbol.lowercase(Locale.getDefault()),
             interval
-        ) { response: CandlestickEvent ->
-            val openTime = response.openTime
+        ) { response ->
+            val kline = response.first()
+            val openTime = kline.openTime
             var updateCandlestick = candlesticksCache!![openTime]
             if (updateCandlestick == null) {
                 // new candlestick
                 updateCandlestick = Candlestick(
-                    openTime = response.openTime,
-                    open = response.open,
-                    low = response.low,
-                    high = response.high,
-                    close = response.close,
-                    closeTime = response.closeTime,
-                    volume = response.volume,
-                    numberOfTrades = response.numberOfTrades,
-                    quoteAssetVolume = response.quoteAssetVolume,
-                    takerBuyQuoteAssetVolume = response.takerBuyQuoteAssetVolume,
-                    takerBuyBaseAssetVolume = response.takerBuyQuoteAssetVolume
+                    openTime = kline.openTime,
+                    open = kline.open,
+                    low = kline.low,
+                    high = kline.high,
+                    close = kline.close,
+                    closeTime = kline.closeTime,
+                    volume = kline.volume,
+                    numberOfTrades = kline.numberOfTrades,
+                    quoteAssetVolume = kline.quoteAssetVolume,
+                    takerBuyQuoteAssetVolume = kline.takerBuyQuoteAssetVolume,
+                    takerBuyBaseAssetVolume = kline.takerBuyQuoteAssetVolume
                 )
             }
 

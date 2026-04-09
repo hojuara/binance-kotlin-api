@@ -375,7 +375,7 @@ class BinanceApiRestClientImpl(
             HttpMethod.GET,
             "/api/v3/account",
             listOf(
-                "omitZeroBalances" to  omitZeroBalances,
+                "omitZeroBalances" to omitZeroBalances,
                 "recvWindow" to recvWindow,
                 "timestamp" to System.currentTimeMillis(),
             ),
@@ -387,8 +387,7 @@ class BinanceApiRestClientImpl(
         symbol: String,
         limit: Int?,
         fromId: Long?,
-        recvWindow: Long?,
-        timestamp: Long?
+        recvWindow: Long?
     ): List<Trade> =
         execute(
             HttpMethod.GET,
@@ -398,7 +397,7 @@ class BinanceApiRestClientImpl(
                 "limit" to limit,
                 "fromId" to fromId,
                 "recvWindow" to recvWindow,
-                "timestamp" to timestamp
+                "timestamp" to System.currentTimeMillis()
             ),
             Array<Trade>::class.java,
             signed = true

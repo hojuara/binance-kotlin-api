@@ -25,7 +25,7 @@ object BinanceApiConstants {
     /**
      * Streaming API base URL.
      */
-    const val WS_API_BASE_URL = "wss://stream.binance.com:9443/ws"
+    const val WS_API_BASE_URL = "wss://ws-api.binance.com:443/ws-api/v3"
 
     /**
      * Asset info base URL.

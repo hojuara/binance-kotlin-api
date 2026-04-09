@@ -8,6 +8,7 @@ import tools.jackson.databind.DeserializationContext
 import tools.jackson.databind.JsonNode
 import tools.jackson.databind.ObjectMapper
 import tools.jackson.databind.ValueDeserializer
+import tools.jackson.module.kotlin.contains
 import java.io.IOException
 
 /**
@@ -24,22 +25,23 @@ class UserDataUpdateEventDeserializer : ValueDeserializer<UserDataUpdateEvent>()
 
         return p?.let {
             val node = it.readValueAsTree<JsonNode>()
-            val json = node.toString()
+            node["error"]?.run { throw BinanceApiException(node["error"]["msg"].asString()) }
+            if (node["event"] == null) return null
 
-            val eventTypeId = node["e"].asString()
-            val eventTime = node["E"].asLong()
+            val event = node["event"]
+            val eventTypeId = event["e"].asString()
+            val eventTime = event["E"].asLong()
             val userDataUpdateEventType = UserDataUpdateEventType.fromEventTypeId(eventTypeId)
 
             return UserDataUpdateEvent().apply {
                 eventType = userDataUpdateEventType
                 this.eventTime = eventTime
 
-                if (userDataUpdateEventType == UserDataUpdateEventType.ACCOUNT_UPDATE ||
-                    userDataUpdateEventType == UserDataUpdateEventType.ACCOUNT_POSITION_UPDATE
-                ) {
-                    accountUpdateEvent = getUserDataUpdateEventDetail(json, AccountUpdateEvent::class.java, mapper!!)
+                val json = event.toString()
+                if (userDataUpdateEventType == UserDataUpdateEventType.ACCOUNT_UPDATE) {
+                    accountUpdateEvent = getUserDataUpdateEventDetail(json, AccountUpdateEvent::class.java, mapper)
                 } else {
-                    orderTradeUpdateEvent = getUserDataUpdateEventDetail(json, OrderTradeUpdateEvent::class.java, mapper!!)
+                    orderTradeUpdateEvent = getUserDataUpdateEventDetail(json, OrderTradeUpdateEvent::class.java, mapper)
                 }
             }
         }

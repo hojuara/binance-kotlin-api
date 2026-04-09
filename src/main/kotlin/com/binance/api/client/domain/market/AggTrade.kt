@@ -34,5 +34,9 @@ open class AggTrade(
 
     @field:JsonProperty("m")
     @get:JsonProperty("m")
-    open val isBuyerMaker: Boolean
+    open val isBuyerMaker: Boolean,
+
+    @field:JsonProperty("M")
+    @get:JsonProperty("M")
+    open val wasBestPriceMatch: Boolean
 )

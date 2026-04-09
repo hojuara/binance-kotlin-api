@@ -168,9 +168,8 @@ class BinanceApiAsyncRestClientImpl(
         limit: Int?,
         fromId: Long?,
         recvWindow: Long?,
-        timestamp: Long?,
         callback: BinanceApiCallback<List<Trade>>
-    ) = submit(callback) { syncClient.getMyTrades(symbol, limit, fromId, recvWindow, timestamp) }
+    ) = submit(callback) { syncClient.getMyTrades(symbol, limit, fromId, recvWindow) }
 
     override fun withdraw(
         asset: String,

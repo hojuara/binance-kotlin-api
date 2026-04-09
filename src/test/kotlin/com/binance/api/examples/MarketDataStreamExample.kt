@@ -3,7 +3,6 @@ package com.binance.api.examples
 import com.binance.api.client.BinanceApiCallback
 import com.binance.api.client.BinanceApiClientFactory
 import com.binance.api.client.domain.event.AggTradeEvent
-import com.binance.api.client.domain.event.CandlestickEvent
 import com.binance.api.client.domain.event.DepthEvent
 import com.binance.api.client.domain.market.CandlestickInterval
 import java.io.IOException
@@ -21,15 +20,15 @@ object MarketDataStreamExample {
         val client = BinanceApiClientFactory.newInstance().newWebSocketClient()
 
         // Listen for aggregated trade events for ETH/BTC
-        client.onAggTradeEvent("ethbtc", BinanceApiCallback { response: AggTradeEvent? -> println(response) })
+        client.onAggTradeEvent("ETHBTC", BinanceApiCallback { response: Array<AggTradeEvent>? -> println(response) })
 
         // Listen for changes in the order book in ETH/BTC
-        client.onDepthEvent("ethbtc", BinanceApiCallback { response: DepthEvent? -> println(response) })
+        client.onDepthEvent("ETHBTC", BinanceApiCallback { response: DepthEvent? -> println(response) })
 
         // Obtain 1m candlesticks in real-time for ETH/BTC
         client.onCandlestickEvent(
-            "ethbtc",
+            "ETHBTC",
             CandlestickInterval.ONE_MINUTE,
-            BinanceApiCallback { response: CandlestickEvent? -> println(response) })
+            BinanceApiCallback { response -> println(response) })
     }
 }

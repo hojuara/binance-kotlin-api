@@ -206,14 +206,15 @@ interface BinanceApiRestClient {
      * @param symbol symbol to get trades from
      * @param limit  default 500; max 1000
      * @param fromId TradeId to fetch from. Default gets most recent trades.
+     * @param recvWindow specifies for how long the request stays valid in milliseconds.
+     * Supports up to three decimal places of precision (e.g., 6000.346) so that microseconds may be specified.
      * @return a list of trades
      */
     fun getMyTrades(
         symbol: String,
         limit: Int? = null,
         fromId: Long? = null,
-        recvWindow: Long? = null,
-        timestamp: Long? = null
+        recvWindow: Long? = null
     ): List<Trade>
 
     /**

@@ -17,14 +17,18 @@ object BinanceIntegrationTestSupport {
         }
     }
 
-    fun factoryFromEnv(): BinanceApiClientFactory {
-        val apiKey = System.getenv(ENV_API_KEY)!!.trim()
-        val secretKey = System.getenv(ENV_SECRET_KEY)!!.trim()
-        return BinanceApiClientFactory.newInstance(apiKey, secretKey)
+    fun factory(): BinanceApiClientFactory {
+        val apiKey = System.getenv(ENV_API_KEY)?.trim()
+        val secretKey = System.getenv(ENV_SECRET_KEY)?.trim()
+        return if (apiKey.isNullOrBlank() || secretKey.isNullOrBlank()) {
+            BinanceApiClientFactory.newInstance()
+        } else {
+            BinanceApiClientFactory.newInstance(apiKey, secretKey)
+        }
     }
 
-    fun newRestClient(): BinanceApiRestClient = factoryFromEnv().newRestClient()
+    fun newRestClient(): BinanceApiRestClient = factory().newRestClient()
 
-    fun newWebSocketClient(): BinanceApiWebSocketClient = factoryFromEnv().newWebSocketClient()
+    fun newWebSocketClient(): BinanceApiWebSocketClient = factory().newWebSocketClient()
 }
 

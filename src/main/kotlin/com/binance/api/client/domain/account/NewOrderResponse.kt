@@ -17,18 +17,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder
 data class NewOrderResponse(
     val symbol: String,
     val orderId: Long,
-    val orderListId: Long,
     val clientOrderId: String,
     val transactTime: Long,
-    val price: String?,
-    val origQty: String?,
-    val executedQty: String?,
-    val cummulativeQuoteQty: String?,
-    val status: OrderStatus?,
-    val timeInForce: TimeInForce?,
-    val type: OrderType?,
-    val side: OrderSide?,
-    val fills: List<Trade>?
+    val price: String,
+    val origQty: String,
+    val executedQty: String,
+    val origQuoteOrderQty: String,
+    val cummulativeQuoteQty: String,
+    val status: OrderStatus,
+    val timeInForce: TimeInForce,
+    val type: OrderType,
+    val side: OrderSide,
+    val workingTime: Long,
+    val fills: List<TradeFill>?
 ) {
     override fun toString(): String {
         val fillsString = (fills ?: emptyList())

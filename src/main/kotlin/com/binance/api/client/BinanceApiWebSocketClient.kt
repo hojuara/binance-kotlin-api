@@ -12,34 +12,34 @@ interface BinanceApiWebSocketClient {
     /**
      * Open a new web socket to receive [depthEvents][DepthEvent] on a callback.
      *
-     * @param symbols   market (one or coma-separated) symbol(s) to subscribe to
+     * @param symbol   market symbol to subscribe to
      * @param callback  the callback to call on new events
      * @return a [Closeable] that allows the underlying web socket to be closed.
      */
-    fun onDepthEvent(symbols: String, callback: BinanceApiCallback<DepthEvent>): Closeable
+    fun onDepthEvent(symbol: String, callback: BinanceApiCallback<DepthEvent>): Closeable
 
     /**
      * Open a new web socket to receive [candlestickEvents][CandlestickEvent] on a callback.
      *
-     * @param symbols   market (one or coma-separated) symbol(s) to subscribe to
+     * @param symbol   market symbol to subscribe to
      * @param interval  the interval of the candles tick events required
      * @param callback  the callback to call on new events
      * @return a [Closeable] that allows the underlying web socket to be closed.
      */
     fun onCandlestickEvent(
-        symbols: String,
+        symbol: String,
         interval: CandlestickInterval,
-        callback: BinanceApiCallback<CandlestickEvent>
+        callback: BinanceApiCallback<Array<CandlestickEvent>>
     ): Closeable
 
     /**
      * Open a new web socket to receive [aggTradeEvents][AggTradeEvent] on a callback.
      *
-     * @param symbols   market (one or coma-separated) symbol(s) to subscribe to
+     * @param symbol   market symbol to subscribe to
      * @param callback  the callback to call on new events
      * @return a [Closeable] that allows the underlying web socket to be closed.
      */
-    fun onAggTradeEvent(symbols: String, callback: BinanceApiCallback<AggTradeEvent>): Closeable
+    fun onAggTradeEvent(symbol: String, callback: BinanceApiCallback<Array<AggTradeEvent>>): Closeable
 
     /**
      * Open a new web socket to receive [userDataUpdateEvents][UserDataUpdateEvent] on a callback.
@@ -50,30 +50,11 @@ interface BinanceApiWebSocketClient {
     fun onUserDataUpdateEvent(callback: BinanceApiCallback<UserDataUpdateEvent>): Closeable
 
     /**
-     * Open a new web socket to receive [allMarketTickersEvents][AllMarketTickersEvent] on a callback.
-     *
-     * @param callback the callback to call on new events
-     * @return a [Closeable] that allows the underlying web socket to be closed.
-     */
-    fun onAllMarketTickersEvent(callback: BinanceApiCallback<List<AllMarketTickersEvent>>): Closeable
-
-
-    /**
-     * Open a new web socket to receive [bookDepthEvents][BookDepthEvent] on a callback.
-     *
-     * @param symbol    market (one only) symbol to subscribe to
-     * @param limit     depth linut (5, 10 or 20)
-     * @param callback  the callback to call on new events
-     * @return a [Closeable] that allows the underlying web socket to be closed.
-     */
-    fun onPartialDepthEvent(symbol: String, limit: Int, callback: BinanceApiCallback<BookDepthEvent>): Closeable
-
-    /**
      * Open a new web socket to receive {@linke BookTickerEvent bookTickerEvents} on a callback.
      *
-     * @param symbol    market (one only) symbol to subscribe to
+     * @param symbols    market symbols to subscribe to
      * @param callback  the callback to call on new events
      * @return
      */
-    fun onBookTickerEvent(symbols: String, callback: BinanceApiCallback<BookTickerEvent>): Closeable
+    fun onBookTickerEvent(symbols: Array<String>, callback: BinanceApiCallback<Array<BookTickerEvent>>): Closeable
 }

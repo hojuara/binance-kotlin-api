@@ -2,7 +2,6 @@ package com.binance.api.examples
 
 import com.binance.api.client.BinanceApiCallback
 import com.binance.api.client.BinanceApiClientFactory
-import com.binance.api.client.domain.event.AggTradeEvent
 import com.binance.api.client.domain.market.AggTrade
 import java.util.*
 
@@ -44,19 +43,21 @@ class AggTradesCacheExample(symbol: String) {
         val factory = BinanceApiClientFactory.newInstance()
         val client = factory.newWebSocketClient()
 
-        client.onAggTradeEvent(symbol.lowercase(Locale.getDefault()), BinanceApiCallback { response: AggTradeEvent? ->
-            val aggregatedTradeId = response!!.aggregatedTradeId
+        client.onAggTradeEvent(symbol.lowercase(Locale.getDefault()), BinanceApiCallback { response ->
+            val aggTrade = response.first()
+            val aggregatedTradeId = aggTrade.aggregatedTradeId
             var updateAggTrade = aggTradesCache!!.get(aggregatedTradeId)
             if (updateAggTrade == null) {
                 // new agg trade
                 updateAggTrade = AggTrade(
                     aggregatedTradeId = aggregatedTradeId,
-                    price = response.price,
-                    quantity = response.quantity,
-                    firstBreakdownTradeId = response.firstBreakdownTradeId,
-                    lastBreakdownTradeId = response.lastBreakdownTradeId,
+                    price = aggTrade.price,
+                    quantity = aggTrade.quantity,
+                    firstBreakdownTradeId = aggTrade.firstBreakdownTradeId,
+                    lastBreakdownTradeId = aggTrade.lastBreakdownTradeId,
                     tradeTime = System.currentTimeMillis(),
-                    isBuyerMaker = response.isBuyerMaker
+                    isBuyerMaker = aggTrade.isBuyerMaker,
+                    wasBestPriceMatch = aggTrade.wasBestPriceMatch
                 )
             }
 

@@ -117,9 +117,9 @@ class DepthCacheExample(private val symbol: String) {
      */
     private fun applyPendingDeltas(pendingDeltas: MutableList<DepthEvent>) {
         val updateOrderBook = Consumer { newEvent: DepthEvent ->
-            if (newEvent.finalUpdateId > lastUpdateId) {
+            if (newEvent.lastUpdateId > lastUpdateId) {
                 println(newEvent)
-                lastUpdateId = newEvent.finalUpdateId
+                lastUpdateId = newEvent.lastUpdateId
                 updateOrderBook(this.asks!!, newEvent.asks as MutableList<OrderBookEntry>)
                 updateOrderBook(this.bids!!, newEvent.bids as MutableList<OrderBookEntry>)
                 printDepthCache()
@@ -132,7 +132,7 @@ class DepthCacheExample(private val symbol: String) {
             // indicating they come
             // after the snapshot.
             pendingDeltas.stream()
-                .filter { e: DepthEvent? -> e!!.finalUpdateId > lastUpdateId }  // Ignore any updates before the
+                .filter { e: DepthEvent? -> e!!.lastUpdateId > lastUpdateId }  // Ignore any updates before the
                 // snapshot
                 .forEach(updateOrderBook)
 

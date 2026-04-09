@@ -2,7 +2,6 @@ package com.binance.api.examples
 
 import com.binance.api.client.BinanceApiClientFactory
 import com.binance.api.client.domain.account.AssetBalance
-import com.binance.api.client.domain.event.UserDataUpdateEvent.UserDataUpdateEventType.ACCOUNT_UPDATE
 import java.util.*
 
 /**
@@ -20,16 +19,6 @@ class AccountBalanceCacheExample(apiKey: String, secret: String) {
     val accountBalanceCache: MutableMap<String, AssetBalance> = TreeMap()
 
     /**
-     * Listen key used to interact with the user data streaming API.
-     */
-    private val listenKey: String
-
-    init {
-        this.listenKey = initializeAssetBalanceCacheAndStreamSession()
-        startAccountBalanceEventStreaming(listenKey)
-    }
-
-    /**
      * Initializes the asset balance cache by using the REST API and starts a new
      * user data streaming session.
      *
@@ -45,28 +34,5 @@ class AccountBalanceCacheExample(apiKey: String, secret: String) {
         }
 
         throw UnsupportedOperationException("UserDataStream listenKey API was removed from Binance API")
-    }
-
-    /**
-     * Begins streaming of user data events.
-     */
-    private fun startAccountBalanceEventStreaming(listenKey: String) {
-        val client = clientFactory.newWebSocketClient()
-
-        client.onUserDataUpdateEvent() { response ->
-            if (response.eventType == ACCOUNT_UPDATE) {
-                response.accountUpdateEvent!!.balances.forEach { assetBalance ->
-                    accountBalanceCache[assetBalance.asset!!] = assetBalance
-                }
-                println("Cache atualizado: $accountBalanceCache")
-            }
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            AccountBalanceCacheExample("YOUR_API_KEY", "YOUR_SECRET")
-        }
     }
 }

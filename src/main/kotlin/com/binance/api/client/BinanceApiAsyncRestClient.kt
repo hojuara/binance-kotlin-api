@@ -3,7 +3,6 @@ package com.binance.api.client
 import com.binance.api.client.constant.BinanceApiConstants
 import com.binance.api.client.domain.account.*
 import com.binance.api.client.domain.account.request.*
-import com.binance.api.client.domain.event.ListenKey
 import com.binance.api.client.domain.general.Asset
 import com.binance.api.client.domain.general.ExchangeInfo
 import com.binance.api.client.domain.general.ServerTime
@@ -234,6 +233,7 @@ interface BinanceApiAsyncRestClient {
      * @param symbol symbol to get trades from
      * @param limit default 500; max 1000
      * @param fromId TradeId to fetch from. Default gets most recent trades.
+     * @param recvWindow specifies for how long the request stays valid in milliseconds.
      * @param callback the callback that handles the response with a list of trades
      */
     fun getMyTrades(
@@ -241,7 +241,6 @@ interface BinanceApiAsyncRestClient {
         limit: Int? = null,
         fromId: Long? = null,
         recvWindow: Long? = null,
-        timestamp: Long? = null,
         callback: BinanceApiCallback<List<Trade>>
     )
 

@@ -1,20 +1,19 @@
 package com.binance.api.client.domain.event
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonFormat.Shape.ARRAY
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import tools.jackson.databind.annotation.JsonDeserialize
-import tools.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
 
 /**
  * An interval candlestick for a symbol providing informations on price that can
  * be used to produce candlestick charts.
  */
-@JsonDeserialize(using = CandlestickEventDeserializer::class)
-@JsonSerialize(using = CandlestickEventSerializer::class)
+@JsonFormat(shape = ARRAY)
+@JsonPropertyOrder("openTime", "open", "high", "low", "close", "volume", "closeTime",
+    "quoteAssetVolume", "numberOfTrades", "takerBuyBaseAssetVolume", "takerBuyQuoteAssetVolume")
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class CandlestickEvent(
-    val eventType: String,
-    val eventTime: Long,
-    val symbol: String,
     val openTime: Long,
     val open: String,
     val high: String,
@@ -22,12 +21,8 @@ data class CandlestickEvent(
     val close: String,
     val volume: String,
     val closeTime: Long,
-    val intervalId: String,
-    val firstTradeId: Long,
-    val lastTradeId: Long,
     val quoteAssetVolume: String,
     val numberOfTrades: Long,
     val takerBuyBaseAssetVolume: String,
-    val takerBuyQuoteAssetVolume: String,
-    val isBarFinal: Boolean
+    val takerBuyQuoteAssetVolume: String
 )

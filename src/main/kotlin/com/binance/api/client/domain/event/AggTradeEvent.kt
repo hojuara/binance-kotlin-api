@@ -9,26 +9,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class AggTradeEvent(
-
-    @get:JsonProperty("e")
-    @field:JsonProperty("e")
-    val eventType: String,
-
-    @get:JsonProperty("E")
-    @field:JsonProperty("E")
-    val eventTime: Long,
-
-    @get:JsonProperty("s")
-    @field:JsonProperty("s")
-    val symbol: String,
-
     override val aggregatedTradeId: Long,
     override val price: String,
     override val quantity: String,
     override val firstBreakdownTradeId: Long,
     override val lastBreakdownTradeId: Long,
     override val tradeTime: Long,
-    override val isBuyerMaker: Boolean
+    override val isBuyerMaker: Boolean,
+    override val wasBestPriceMatch: Boolean
 ) : AggTrade(
     aggregatedTradeId = aggregatedTradeId,
     price = price,
@@ -36,5 +24,6 @@ data class AggTradeEvent(
     firstBreakdownTradeId = firstBreakdownTradeId,
     lastBreakdownTradeId = lastBreakdownTradeId,
     tradeTime = tradeTime,
-    isBuyerMaker = isBuyerMaker
+    isBuyerMaker = isBuyerMaker,
+    wasBestPriceMatch = wasBestPriceMatch
 )
